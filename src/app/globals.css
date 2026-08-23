@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/**
+ * ODD theme tokens.
+ *
+ * The scrub engine ships its own defaults inside `@layer sw`, so these unlayered
+ * declarations win regardless of injection order — no specificity hacks needed.
+ * `--sw-bg` matches the diorama stills' cream background so the video posters sit
+ * on the page without a visible edge.
+ */
+:root,
+.sw-root {
+  --sw-bg: #f8ebd8; /* 한지 — 씬 배경과 동일 계열 */
+  --sw-ink: #1b3a34; /* 먹청 — 제목·본문 */
+  --sw-ink-soft: #4f7a5b; /* 솔빛 — 보조 텍스트 */
+  --sw-accent: #e9b949; /* 유채 — 기본 accent, CTA */
+
+  --sw-font-display: "Nanum Myeongjo", "Apple SD Gothic Neo", "Malgun Gothic",
+    ui-serif, Georgia, serif;
+  --sw-font-body: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", ui-sans-serif,
+    system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--sw-bg);
+  color: var(--sw-ink);
+  font-family: var(--sw-font-body);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/**
+ * Korean typography + legibility overrides.
+ *
+ * These are unlayered, so they win over the engine's `@layer sw` defaults without
+ * touching scroll-world-engine.js — the engine file stays byte-identical to the skill
+ * reference so future skill updates drop straight in.
+ */
+
+/* Korean must break at word boundaries. Without keep-all the browser breaks mid-word
+   ("조금 이상 / 한 각도에서"), which reads as a typo. */
+.sw-copy__title,
+.sw-copy__body,
+.sw-copy__eyebrow,
+.sw-copy__tags,
+.sw-hint,
+.sw-btn {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* The hint sits bottom-centre over the diorama itself, where --sw-ink-soft alone
+   disappears into the scene. A soft pill guarantees it reads over any frame. The
+   engine's .14em tracking is tuned for uppercase Latin; on Hangul it just looks loose. */
+.sw-hint {
+  color: color-mix(in srgb, var(--sw-ink) 82%, var(--sw-ink-soft));
+  letter-spacing: 0.02em;
+}
+
+.sw-hint > span:first-child,
+.sw-hint > :not(i) {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sw-bg) 78%, transparent);
+  backdrop-filter: blur(6px);
+  /* On a phone the line wraps; keep both lines centred inside the pill. */
+  text-align: center;
 }
