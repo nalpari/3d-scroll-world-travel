@@ -2,16 +2,26 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+This project uses [Bun](https://bun.com) as its package manager.
+
+Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+bun install
+```
+
+Then run the development server:
+
+```bash
+bun run dev
+```
+
+Other scripts:
+
+```bash
+bun run build   # production build
+bun run start   # serve the production build
+bun run lint    # eslint
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
