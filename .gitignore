@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scroll-world generation workspace (raw renders; shipped assets live in public/)
+.scrollworld/
+
+# local artifacts
+*.stackdump
+.claude/settings.local.json
