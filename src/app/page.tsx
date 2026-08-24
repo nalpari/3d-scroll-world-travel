@@ -16,6 +16,16 @@ declare global {
 
 const ENGINE_SRC = "/scroll-world-engine.js";
 
+// The engine drives everything off window scroll, so the two ends of its track are
+// just the document bounds — no need to reach into its segment table.
+const jump = (end: 0 | 1) =>
+  window.scrollTo({
+    top: end * (document.documentElement.scrollHeight - window.innerHeight),
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+  });
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mountedRef = useRef(false);
@@ -66,5 +76,25 @@ export default function Home() {
     return () => script?.removeEventListener("load", mount);
   }, []);
 
-  return <div id="world" ref={containerRef} />;
+  return (
+    <>
+      <div id="world" ref={containerRef} />
+      <nav className="sw-jump" aria-label="페이지 이동">
+        <button type="button" aria-label="맨 위로" onClick={() => jump(0)}>
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M4 3.5h8" />
+            <path d="M8 12.8V6.4" />
+            <path d="M5.2 9.2 8 6.2l2.8 3" />
+          </svg>
+        </button>
+        <button type="button" aria-label="맨 아래로" onClick={() => jump(1)}>
+          <svg viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 3.2v6.4" />
+            <path d="M5.2 6.8 8 9.8l2.8-3" />
+            <path d="M4 12.5h8" />
+          </svg>
+        </button>
+      </nav>
+    </>
+  );
 }
