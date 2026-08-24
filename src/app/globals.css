@@ -15,11 +15,12 @@
   --sw-ink-soft: #4f7a5b; /* 솔빛 — 보조 텍스트 */
   --sw-accent: #e9b949; /* 유채 — 기본 accent, CTA */
 
-  --sw-font-display: "Nanum Myeongjo", "Apple SD Gothic Neo", "Malgun Gothic",
+  /* --font-display / --font-body come from next/font in layout.tsx; the rest is a
+     fallback for the swap window and for when the webfont fails to load. */
+  --sw-font-display: var(--font-display), "Apple SD Gothic Neo", "Malgun Gothic",
     ui-serif, Georgia, serif;
-  --sw-font-body: "Pretendard", -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", ui-sans-serif,
-    system-ui, sans-serif;
+  --sw-font-body: var(--font-body), -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", ui-sans-serif, system-ui, sans-serif;
 }
 
 html,
