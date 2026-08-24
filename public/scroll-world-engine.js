@@ -101,6 +101,14 @@ function mountScrollWorld(container, config) {
   });
   const NSEG = SEGMENTS.length;
 
+  // Oriental sun mark: alternating long/short flame rays around a solid disc.
+  const SUN_MARK = '<svg viewBox="0 0 32 32" aria-hidden="true">'
+    + Array.from({ length: 12 }, (_, i) =>
+        '<path d="M16 1.1 17.4 6.4 16 7 14.6 6.4Z" transform="rotate(' + i * 30 + ' 16 16)"/>'
+        + '<path d="M16 4.2 17.6 6.4 16 7 14.4 6.4Z" transform="rotate(' + (i * 30 + 15) + ' 16 16)"/>').join('')
+    + '<circle class="sw-sun__ring" cx="16" cy="16" r="9.3"/>'
+    + '<circle class="sw-sun__disc" cx="16" cy="16" r="8"/></svg>';
+
   // ---- DOM ----
   const sky = el('div', 'sw-sky');
   if (config.atmosphere !== false) {
@@ -115,7 +123,7 @@ function mountScrollWorld(container, config) {
   const topbar = el('div', 'sw-topbar');
   if (config.brand) {
     const brand = el('a', 'sw-brand'); brand.href = (config.brand.href || '#');
-    brand.appendChild(el('span', 'sw-brand__mark'));
+    const mk = el('span', 'sw-brand__mark'); mk.innerHTML = SUN_MARK; brand.appendChild(mk);
     const nm = el('span', 'sw-brand__name'); nm.textContent = config.brand.name || ''; brand.appendChild(nm);
     topbar.appendChild(brand);
   }
@@ -374,7 +382,11 @@ function injectCSS() {
   .sw-scrollbar span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--sw-accent);}
   .sw-topbar{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:clamp(14px,2.4vw,26px) clamp(18px,5vw,64px);}
   .sw-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--sw-ink);}
-  .sw-brand__mark{width:24px;height:28px;border-radius:7px 7px 10px 10px;background:linear-gradient(160deg,var(--sw-accent),color-mix(in srgb,var(--sw-accent) 60%,#000));box-shadow:0 6px 14px color-mix(in srgb,var(--sw-accent) 40%,transparent);}
+  .sw-brand__mark{width:28px;height:28px;filter:drop-shadow(0 5px 10px color-mix(in srgb,var(--sw-accent) 35%,transparent));}
+  .sw-brand__mark svg{display:block;width:100%;height:100%;}
+  .sw-brand__mark path{fill:color-mix(in srgb,var(--sw-accent) 80%,#000);}
+  .sw-brand__mark .sw-sun__disc{fill:var(--sw-accent);}
+  .sw-brand__mark .sw-sun__ring{fill:none;stroke:color-mix(in srgb,var(--sw-accent) 50%,transparent);stroke-width:1;}
   .sw-brand__name{font-family:var(--sw-font-display);font-weight:700;font-size:1.1rem;}
   .sw-nav{display:flex;gap:4px;padding:5px;background:color-mix(in srgb,#fff 55%,transparent);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,var(--sw-accent) 16%,transparent);border-radius:999px;}
   .sw-nav__item{font:inherit;font-size:.82rem;color:var(--sw-ink-soft);border:0;background:transparent;cursor:pointer;padding:7px 14px;border-radius:999px;transition:color .25s,background .25s;}
